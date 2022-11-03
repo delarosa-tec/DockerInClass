@@ -1,10 +1,6 @@
-# dockerPostgres
-Base de datos creada en clase
-## Comandos de docker
-### Crear imagen en Docker
-docker build -t el_nombre_de_tu_imagen .
-### Crear contenedor en Docker
-docker run -p 5433:5432 -d -e POSTGRES_PASSWORD=password el_nombre_de_tu_imagen
-### Conectarte al contenedor
-docker exec -it CONTAINER_ID sh
-docker exec -it CONTAINER_ID bash
+# Docker
+Proyectos de Docker en clase
+## Proyectos
+1. BD contiene el proyecto de Postgres
+2. PrimerAPI contiene un API de Node.JS
+3. SegundaApi contiene un API con express & swagger.

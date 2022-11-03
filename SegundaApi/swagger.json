@@ -1,0 +1,31 @@
+{
+    "swagger" : "2.0",
+    "info": {
+        "title": "First Docu with Swagger",
+        "description": "This is our first docu w/ Node.JS & Swagger.",
+        "license": {
+          "name": "Tec",
+          "url": "https://tec.mx/"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags" : [
+        {
+            "name": "Users",
+            "description": "APIs to control users"
+        }
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "API para obtener un usuario en especifico."
+            },
+            "post": {
+                "tags": ["Users"],
+                "summary": "API para insertar usuarios."
+            }
+        }
+    }
+}
