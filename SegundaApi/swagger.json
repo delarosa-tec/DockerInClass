@@ -1,31 +1,126 @@
 {
-    "swagger" : "2.0",
-    "info": {
-        "title": "First Docu with Swagger",
-        "description": "This is our first docu w/ Node.JS & Swagger.",
-        "license": {
-          "name": "Tec",
-          "url": "https://tec.mx/"
-        }
-    },
-    "host": "localhost:3000",
-    "basePath": "/",
-    "tags" : [
-        {
-            "name": "Users",
-            "description": "APIs to control users"
-        }
-    ],
-    "paths": {
-        "/users": {
-            "get": {
-                "tags": ["Users"],
-                "summary": "API para obtener un usuario en especifico."
-            },
-            "post": {
-                "tags": ["Users"],
-                "summary": "API para insertar usuarios."
-            }
-        }
+  "swagger": "2.0",
+  "info": {
+    "title": "First Docu with Swagger",
+    "description": "This is our first docu w/ Node.JS & Swagger.",
+    "license": {
+      "name": "Para mas informacion",
+      "url": "mailto:delarosa@tec.mx"
     }
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "APIs to control users"
+    },
+    {
+      "name": "Imagenes",
+      "description": "APIs to show images."
+    }
+  ],
+  "paths": {
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "API para obtener un usuario en especifico.",
+        "parameters": [
+          {
+            "in": "path",
+            "type": "string",
+            "name": "userId",
+            "required": true,
+            "description": "Objeto de peticion para insertar un usario."
+          }
+        ],
+        "responses" : {
+          "200": {
+              "description": "OK (Se realiza la peticion de manera correcta)",
+              "schema": {
+                "$ref": "#/defitions/User"
+              }
+          },
+          "404": {
+              "description": "Dato no encontrado"
+          }
+      }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "API para insertar usuarios.",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "schema": {
+              "$ref": "#/defitions/User"
+            },
+            "name": "Users",
+            "description": "Objeto de peticion para insertar un usario."
+          }
+        ],
+        "responses" : {
+          "200": {
+              "description": "OK (Se realiza la peticion de manera correcta)",
+              "schema": {
+                  "type": "string"
+              }
+          },
+          "201": {
+              "description": "Created"
+          },
+          "404": {
+              "description": "Dato no encontrado"
+          }
+      }
+      }
+    },
+    "/show": {
+      "get": {
+        "tags": [
+          "Imagenes"
+        ],
+        "summary": "API para obtener un usuario en especifico."
+      }
+    }
+  },
+  "defitions": {
+    "User": {
+      "properties": {
+        "nombre": 
+        {
+          "name": "nombre",
+          "type": "string"
+        },
+        "apellido": 
+        {
+          "name": "apellido",
+          "type": "string"
+        },
+        "propiedades": 
+        {
+          "$ref": "#/defitions/UserProperties"
+        }
+      },
+      "$ref": "#/defitions/User"
+    },
+    "UserProperties": {
+      "properties": {
+        "edad": 
+        {
+          "name": "edad",
+          "type": "string"
+        }
+      }
+    }
+  }
 }
