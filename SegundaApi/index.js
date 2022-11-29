@@ -2,11 +2,18 @@ const express = require('express')
 var bodyParser = require('body-parser')
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-const winston = require('winston');
+const newrelic = require('newrelic')
+const newrelicFormatter = require('@newrelic/winston-enricher')
+const winston = require('winston')
+const newrelicWinstonFormatter = newrelicFormatter(winston)
+const validate = require('./validate')
 
 const logger = winston.createLogger({
   level: 'info',
-  format: winston.format.json(),
+  format: winston.format.combine(
+    winston.format.label({label: 'test'}),
+    newrelicWinstonFormatter()
+  ),
   defaultMeta: { service: 'segunda-api' },
   transports: [
     //
@@ -26,6 +33,8 @@ const logger = winston.createLogger({
 
 const app = express()
 
+// const serverName = obtenerNombre()
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -42,20 +51,8 @@ app.get('/health', function (req, res) {
 //El metodo de busqueda de usuarios
 app.get('/users/:id', function (req, res) {
   var variable1 = req.params.id;
-  //TODO: Crear busqueda de usuario
-  if(variable1 == "admin") {
-    const response = {nombre: 'John', apellido: 'Doe', propiedades: { edad: '49'}} 
-    logger.info('Se devuelve la respuesta ' + JSON.stringify(response))
-    logger.warn('Muestra Warn')
-    logger.warn('Muestra Request: ' + variable1)
-    res.json(response)
-    // res.send('Usuario '+ variable1 + ' encontrado en la base de datos.')
-  }
-  else {
-    const responseError = 'Usuario inexistente, favor de validar.'
-    logger.error(responseError + ' Usuario: ' + variable1)
-    res.status(404).send(responseError)
-  }
+  const response =  validate.validateUser(variable1) 
+  res.json(response)
 })
 
 //Insertar Usuario
@@ -66,5 +63,8 @@ app.post('/users', function (request, resp) {
     logger.info(response)
     resp.send(response)
 })
+
+/* ... */
+newrelic.addCustomAttribute('some-attribute', 'some-value')
 
 app.listen(3000)
